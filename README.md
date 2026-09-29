@@ -1,6 +1,16 @@
 # Khugo
 Khugo is an open-source language-model project and ecosystem for Western Armenian. This repository keeps product/model code, reproducible training configuration, and research evaluation together.
 
+## Mission
+
+Khugo exists to support the preservation and living use of Western Armenian. It aims to give Western Armenian speakers, diaspora communities, and people reconnecting with their family heritage useful language technology: a model that understands and generates Western Armenian without needlessly shifting into Eastern Armenian.
+
+The project is named in honour of the Khugoyan family. Khugo is an open, evidence-driven effort: language quality claims must come from documented evaluations and review by speakers or linguists, not from marketing language.
+
+## Long-term direction
+
+Khugo's first public model line is planned as **Khugo-Base** followed by **Khugo-Instruct**. The immediate milestone is a clean, reproducible Western-Armenian continued-pretraining experiment. Over time, the project aims to grow into a small open-source team, collaborate with language experts and researchers, and publish research with reproducible evidence.
+
 ## Status
 
 This initial scaffold provides tested local-data processing, configuration validation, and small evaluation primitives. It does **not** download datasets or implement a full training loop yet.
