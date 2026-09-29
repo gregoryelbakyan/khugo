@@ -16,6 +16,7 @@ class CorpusStatistics:
     mean_characters: float
     source_count: int
     documents_by_license: dict[str, int]
+    documents_by_language: dict[str, int]
 
     def to_mapping(self) -> dict[str, object]:
         return asdict(self)
@@ -29,10 +30,12 @@ def compute_statistics(documents: Iterable[TrainingDocument]) -> CorpusStatistic
         source.license for document in materialized for source in document.sources
     )
     source_names = {source.name for document in materialized for source in document.sources}
+    languages = Counter(document.language for document in materialized)
     return CorpusStatistics(
         document_count=len(materialized),
         character_count=character_count,
         mean_characters=character_count / len(materialized) if materialized else 0.0,
         source_count=len(source_names),
         documents_by_license=dict(sorted(licenses.items())),
+        documents_by_language=dict(sorted(languages.items())),
     )

@@ -34,3 +34,5 @@ models/
 *.jsonl.gz
 *.csv
 *.tsv
+!benchmarks/fixtures/
+!benchmarks/fixtures/*.jsonl

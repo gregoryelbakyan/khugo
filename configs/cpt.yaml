@@ -1,12 +1,28 @@
 # Copy this file per experiment and record the Git revision with its results.
-run_name: western-armenian-cpt-baseline
-model_name_or_path: local/base-model
-train_data: data/processed/cpt.jsonl
-output_dir: outputs/western-armenian-cpt-baseline
+run_name: khugo-base-cpt-v0
+model_name_or_path: Qwen/Qwen3-1.7B-Base
+model_revision: main
+tokenizer_revision: main
+train_data: data/processed/train.jsonl
+validation_data: data/processed/validation.jsonl
+output_dir: outputs/khugo-base-cpt-v0
 seed: 42
 max_sequence_length: 2048
 learning_rate: 0.00002
 num_train_epochs: 1
 per_device_train_batch_size: 1
 gradient_accumulation_steps: 16
-bf16: true
+bf16: false
+fp16: true
+allow_remote_model: false
+use_qlora: true
+load_in_4bit: true
+quantization_type: nf4
+gradient_checkpointing: true
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+logging_steps: 10
+save_steps: 100
+resume_from_checkpoint: null

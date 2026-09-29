@@ -14,6 +14,8 @@ class SourceMetadata:
     license: str
     url: str | None = None
     retrieved_at: str | None = None
+    source_id: str | None = None
+    author: str | None = None
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, Any]) -> "SourceMetadata":
@@ -26,6 +28,8 @@ class SourceMetadata:
             license=license_name,
             url=_optional_string(value.get("url")),
             retrieved_at=_optional_string(value.get("retrieved_at")),
+            source_id=_optional_string(value.get("source_id")),
+            author=_optional_string(value.get("author")),
         )
 
     def to_mapping(self) -> dict[str, str]:
@@ -34,6 +38,10 @@ class SourceMetadata:
             result["url"] = self.url
         if self.retrieved_at:
             result["retrieved_at"] = self.retrieved_at
+        if self.source_id:
+            result["source_id"] = self.source_id
+        if self.author:
+            result["author"] = self.author
         return result
 
 
@@ -45,12 +53,15 @@ class TrainingDocument:
     text: str
     sources: tuple[SourceMetadata, ...]
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    language: str = "hyw"
 
     def __post_init__(self) -> None:
         if not self.id.strip():
             raise ValueError("document id must not be empty")
         if not self.sources:
             raise ValueError("every training document requires source metadata")
+        if self.language not in {"hyw", "hye"}:
+            raise ValueError("language must be 'hyw' or 'hye'")
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, Any]) -> "TrainingDocument":
@@ -61,6 +72,12 @@ class TrainingDocument:
         raw_sources = value.get("sources")
         if raw_sources is None:
             raw_source = value.get("source")
+            if raw_source is None and value.get("source_id"):
+                raw_source = {
+                    "source_id": value["source_id"],
+                    "name": value.get("source_name", value["source_id"]),
+                    "license": value.get("license", "unknown"),
+                }
             raw_sources = [raw_source] if raw_source is not None else []
         if not isinstance(raw_sources, list):
             raise ValueError("document sources must be a list or a source object")
@@ -70,15 +87,30 @@ class TrainingDocument:
         metadata = value.get("metadata", {})
         if not isinstance(metadata, Mapping):
             raise ValueError("document metadata must be an object")
-        return cls(id=document_id, text=text, sources=sources, metadata=dict(metadata))
+        language = value.get("language", "hyw")
+        if not isinstance(language, str):
+            raise ValueError("document language must be a string")
+        return cls(
+            id=document_id,
+            text=text,
+            sources=sources,
+            metadata=dict(metadata),
+            language=language,
+        )
 
     def to_mapping(self) -> dict[str, Any]:
-        return {
+        primary_source = self.sources[0]
+        result: dict[str, Any] = {
             "id": self.id,
             "text": self.text,
+            "language": self.language,
             "sources": [source.to_mapping() for source in self.sources],
             "metadata": dict(self.metadata),
         }
+        if primary_source.source_id:
+            result["source_id"] = primary_source.source_id
+        result["license"] = primary_source.license
+        return result
 
 
 def _optional_string(value: object) -> str | None:

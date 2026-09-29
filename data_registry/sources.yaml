@@ -1,0 +1,5 @@
+# Add a source only after verifying its terms. Empty by design: Khugo never downloads corpora.
+# Required fields: source_id, source_name, url, author (optional), license,
+# copyright_status, retrieved_at (optional), training_allowed,
+# redistribution_allowed, notes (optional).
+sources: []
