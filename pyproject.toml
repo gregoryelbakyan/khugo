@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "khugo"
+version = "0.1.0"
+description = "Open-source language-model tooling for Western Armenian."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Khugo contributors" }]
+dependencies = [
+  "accelerate>=1.0",
+  "bitsandbytes>=0.45",
+  "datasets>=3.0",
+  "datasketch>=1.6",
+  "pandas>=2.2",
+  "peft>=0.14",
+  "pyarrow>=17.0",
+  "PyYAML>=6.0",
+  "sacrebleu>=2.5",
+  "safetensors>=0.5",
+  "torch>=2.5",
+  "transformers>=4.46",
+  "trl>=0.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "pytest-cov>=6.0", "ruff>=0.8"]
+
+[project.scripts]
+khugo-prepare-data = "khugo.cli:prepare_data_main"
+khugo-evaluate = "khugo.cli:evaluate_main"
+khugo-train-cpt = "khugo.cli:train_cpt_main"
+khugo-train-sft = "khugo.cli:train_sft_main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/khugo"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
