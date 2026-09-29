@@ -1,5 +1,4 @@
 # Khugo
-
 Khugo is an open-source language-model project and ecosystem for Western Armenian. This repository keeps product/model code, reproducible training configuration, and research evaluation together.
 
 ## Status
@@ -55,4 +54,4 @@ uv run ruff check .
 uv run pytest
 ```
 
-Raw datasets, checkpoints, adapters, and model weights are ignored by Git. Commit code, configuration, aggregate benchmarks, and public-safe documentation only. Choose and add a repository licence before the first public release.
+Raw datasets, checkpoints, adapters, and model weights are ignored by Git. Commit code, configuration, aggregate benchmarks, and public-safe documentation only. Khugo source code is licensed under the [MIT License](LICENSE).
