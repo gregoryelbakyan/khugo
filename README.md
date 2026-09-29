@@ -1,2 +1,2 @@
-# khugo
+# Khugo
 Open-source AI-model for Western Armenian
